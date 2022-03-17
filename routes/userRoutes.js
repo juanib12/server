@@ -9,6 +9,9 @@ const {
   getRefreshToken,
   verifyUser,
 } = require("../middleware/authenticate");
+const crearorden = require("../Controllers/MercadopagoController")
+const notificacionorden = require("../Controllers/MercadopagoController")
+
 
 router.post("/signup", (req, res, next) => {
   // Verify that first name is not empty
@@ -27,6 +30,7 @@ router.post("/signup", (req, res, next) => {
           res.statusCode = 500;
           res.send(err);
         } else {
+          user.addres = req.body.addres;
           user.avatar = req.body.avatar;
           user.firstName = req.body.firstName;
           user.lastName = req.body.lastName || "";

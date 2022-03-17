@@ -7,7 +7,7 @@ const cors = require("cors");
 const { Product } = require("./models/products");
 const passport = require("passport");
 const bodyParser = require("body-parser");
-
+const mercadopago = require("mercadopago");
 
 if (process.env.NODE_ENV !== "production") {
   // Load environment variables from .env file in non prod environments
@@ -27,13 +27,12 @@ const userRouter = require("./routes/userRoutes");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 const whitelist = process.env.WHITELISTED_DOMAINS
   ? process.env.WHITELISTED_DOMAINS.split(",")
   : [];
-
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -94,13 +93,43 @@ app.get("/api/product/articles_by_name", (req, res) => {
   });
 });
 
+app.get("/api/product/articles_by_type", (req, res) => {
+  let type = req.query.type;
+  let items = req.query.type;
+  if (type === "array") {
+    let ids = req.query.type.split(",");
+    items = [];
+    items = ids.map((item) => {
+      return mongoose.Types.typeProduct(item);
+    });
+  }
+  Product.find({ typeProduct: { $in: items } }).exec((err, docs) => {
+    return res.status(200).send(docs);
+  });
+});
+
+app.get("/api/product/articles_by_sex", (req, res) => {
+  let type = req.query.type;
+  let items = req.query.sex;
+  if (type === "array") {
+    let ids = req.query.sex.split(",");
+    items = [];
+    items = ids.map((item) => {
+      return mongoose.Types.Sex(item);
+    });
+  }
+  Product.find({ Sex: { $in: items } }).exec((err, docs) => {
+    return res.status(200).send(docs);
+  });
+});
+
 app.get("/api/product/articles", (req, res) => {
   let order = req.query.order ? req.query.order : "asc";
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   let limit = req.query.limit ? parseInt(req.query.limit) : 100;
 
   Product.find()
-    .sort([[sortBy, order]])
+    .sort([[type, order]])
     .limit(limit)
     .exec((err, articles) => {
       if (err) return res.status(400).send(err);

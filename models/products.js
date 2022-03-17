@@ -24,6 +24,11 @@ const productSchema = mongoose.Schema(
         type: String,
         maxlength: 100,
     },
+    Sex: {
+      required: false,
+      type: String,
+      default: "",
+    },
     shipping: {
       required: true,
       type: Boolean,

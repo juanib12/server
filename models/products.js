@@ -19,10 +19,14 @@ const productSchema = mongoose.Schema(
       type: Number,
       maxlength: 255,
     },
+    oferta: {
+      required: false,
+      type: Number,
+    },
     typeProduct: {
-        required: true,
-        type: String,
-        maxlength: 100,
+      required: true,
+      type: String,
+      maxlength: 100,
     },
     Sex: {
       required: false,

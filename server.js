@@ -63,6 +63,17 @@ app.post("/api/product/article", (req, res) => {
   });
 });
 
+// app.post("/api/product/article/oferta", (req, res) => {
+//   const product = new Product(req.body.oferta);
+//   product.save((err, doc) => {
+//     if (err) return res.json({ success: false, err });
+//     res.status(200).json({
+//       success: true,
+//       article: doc,
+//     });
+//   });
+// });
+
 app.get("/api/product/articles_by_id", (req, res) => {
   let type = req.query.type;
   let items = req.query._id;
